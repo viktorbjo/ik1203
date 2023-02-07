@@ -14,11 +14,11 @@ public class TCPClient {
         InputStream inFromServer = clientSocket.getInputStream();   //InputStream för att ta emot data från server
         OutputStream outToServer = clientSocket.getOutputStream(); // Samma som ovan fast skicka
 
-        outToServer.write(toServerBytes); 
+        outToServer.write(toServerBytes); // skickar data från toServerBytes till outputStream
 
-        byte[] buffer = new byte[1024];
+        byte[] buffer = new byte[1024]; // alokera minnes buffer
 
-        for (int length = inFromServer.read(buffer); length > 0; length = inFromServer.read(buffer)) {
+        for (int length = inFromServer.read(buffer); length > 0; length = inFromServer.read(buffer)) { // loopar för att skriva den data vi tar emot till byteArrayOutputStream
             response.write(buffer, 0, buffer.length);
         }
 
@@ -27,23 +27,7 @@ public class TCPClient {
 
     }
 
-  public byte[] askServer(String hostname, int port) throws IOException {
-
-        ByteArrayOutputStream response = new ByteArrayOutputStream();
-        Socket clientSocket = new Socket(hostname, port);
-        InputStream inFromServer = clientSocket.getInputStream();
-
-
-        byte[] buffer = new byte[1024];
-
-        for (int length = inFromServer.read(buffer); length > 0; length = inFromServer.read(buffer)) {
-            response.write(buffer, 0, buffer.length);
-        }
-
-        clientSocket.close();
-        return response.toByteArray();
     }
-}
 
 
 
