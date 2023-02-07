@@ -16,10 +16,10 @@ public class TCPClient {
 
         outToServer.write(toServerBytes); // skickar data från toServerBytes till outputStream
 
-        byte[] buffer = new byte[1024]; // alokera statisk minnes buffer
+        byte[] staticBuffer = new byte[1024]; // alokera statisk minnes buffer
 
-        for (int length = inFromServer.read(buffer); length > 0; length = inFromServer.read(buffer)) { // loopar för att skriva den data vi tar emot till byteArrayOutputStream
-            out.write(buffer, 0, buffer.length);
+        for (int length = inFromServer.read(staticBuffer); length > 0; length = inFromServer.read(staticBuffer)) { // loopar för att skriva den data vi tar emot till byteArrayOutputStream
+            out.write(staticBuffer, 0, staticBuffer.length);
         }
 
         clientSocket.close(); //stäng av socket anslutningen
