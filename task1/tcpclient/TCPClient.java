@@ -17,8 +17,8 @@ public class TCPClient {
         outToServer.write(toServerBytes); // skickar data från toServerBytes till outputStream
 
         byte[] staticBuffer = new byte[1024]; // alokera statisk minnes buffer
-
-        for (int length = inFromServer.read(staticBuffer); length > 0; length = inFromServer.read(staticBuffer)) { // loopar för att skriva den data vi tar emot till byteArrayOutputStream
+        int length;
+        while((length = inFromServer.read(staticBuffer)) != -1){
             out.write(staticBuffer, 0, staticBuffer.length);
         }
 
