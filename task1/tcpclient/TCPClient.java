@@ -19,7 +19,7 @@ public class TCPClient {
         byte[] staticBuffer = new byte[1024]; // alokera statisk minnes buffer
         int length;
         while((length = inFromServer.read(staticBuffer)) != -1){
-            out.write(staticBuffer, 0, staticBuffer.length);
+            out.write(staticBuffer, 0, length);
         }
 
         clientSocket.close(); //stäng av socket anslutningen
