@@ -24,9 +24,11 @@ public class TCPClient {
         byte[] staticBuffer = new byte[1024]; // alokera statisk minnes buffer
         int length;
         int totalLength = 0;
+        if(timeout != null){
         clientSocket.setSoTimeout(timeout);
+        }
 
-        while (true) {
+        while (inFromServer.read(staticBuffer) != -1) {
             length = inFromServer.read(staticBuffer);
             if (length == -1) {
                 break;
