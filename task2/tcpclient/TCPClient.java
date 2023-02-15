@@ -28,11 +28,7 @@ public class TCPClient {
         clientSocket.setSoTimeout(timeout);
         }
 
-        while (inFromServer.read(staticBuffer) != -1) {
-            length = inFromServer.read(staticBuffer);
-            if (length == -1) {
-                break;
-            }
+        while ((length = inFromServer.read(staticBuffer)) != -1) {
 
             out.write(staticBuffer, 0, length);
             totalLength += length;
@@ -40,6 +36,8 @@ public class TCPClient {
             if (limit != null && totalLength >= limit) {
                 break;
             }
+            if(length < staticBuffer.length)
+            break;
         }
 
         if (shutdown) {
