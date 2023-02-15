@@ -21,6 +21,9 @@ public class TCPClient {
 
         outToServer.write(toServerBytes); // skickar data från toServerBytes till outputStream
 
+        if (shutdown) {
+            clientSocket.shutdownOutput();
+        }
         byte[] staticBuffer = new byte[1024]; // alokera statisk minnes buffer
         int length;
         int totalLength = 0;
@@ -29,20 +32,20 @@ public class TCPClient {
         }
 
         while ((length = inFromServer.read(staticBuffer)) != -1) {
-
+            // length = inFromServer.read(staticBuffer);
+            //if(length == -1){
+            //  break;
+            //}
             out.write(staticBuffer, 0, length);
             totalLength += length;
 
             if (limit != null && totalLength >= limit) {
                 break;
             }
-            if(length < staticBuffer.length)
-            break;
+            // if(length < staticBuffer.length)
+            //break;
         }
 
-        if (shutdown) {
-            clientSocket.shutdownOutput();
-        }
 
         clientSocket.close();
         return out.toByteArray();
