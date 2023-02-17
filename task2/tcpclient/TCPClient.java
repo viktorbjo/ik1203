@@ -37,6 +37,7 @@ public class TCPClient {
             totalLength += length;
 
             if (limit != null && totalLength >= limit) {
+                // out.write(staticBuffer, 0, length - (totalLength - limit));
                 break;
             }
         }
