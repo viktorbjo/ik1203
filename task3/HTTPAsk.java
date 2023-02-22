@@ -34,11 +34,12 @@ public class HTTPAsk {
                     }
                 }
 
+                String message = parameters.length > 4 ? parameters[5] : "";
                 // Call TCPClient and get response
                 TCPClient tcpClient = new TCPClient(false, 5000, 1024);
                 byte[] responseBytes = new byte[0];
                 try {
-                    responseBytes = tcpClient.askServer(hostname, portNum, command.getBytes("UTF-8"));
+                    responseBytes = tcpClient.askServer(hostname, portNum, message.getBytes("UTF-8"));
                 } catch (IOException e) {
                     responseBytes = "HTTP/1.1 404 Not Found\r\n\r\n".getBytes("UTF-8");
                 }
