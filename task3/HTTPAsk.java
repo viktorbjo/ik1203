@@ -5,13 +5,10 @@ import tcpclient.TCPClient;
 
 public class HTTPAsk {
  public static void main(String[] args) throws Exception {
-        // Parse command-line arguments
        Integer port = Integer.parseInt(args[0]);
 
-        // Create server socket
         ServerSocket serverSocket = new ServerSocket(port);
 
-        // Initialize variables for handling incoming requests
         boolean shutdown = false;
         Integer timeout = null; // milliseconds
         Integer limit = null;
