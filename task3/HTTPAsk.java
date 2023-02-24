@@ -35,10 +35,10 @@ public class HTTPAsk {
  
             if (!requestString.contains("ask")) {
                 System.out.println("test ask");
-                errorCheck.append("HTTP/1.1 404 Not Found\r\n");
+                errorCheck.append("HTTP/1.1 404 Not Found\r\n\r\n");
                 out.write(errorCheck.toString().getBytes());
                 continue;
-            }
+                }
             if (!requestString.contains("GET") || !requestString.contains("hostname")) {
                 System.out.println("elis");
                 errorCheck.append("HTTP/1.1 400 Bad Request\r\n");
@@ -71,8 +71,6 @@ public class HTTPAsk {
                 break;
         }
     }
-
-
 
         TCPClient tcpClient = new TCPClient(shutdown, timeout, limit);
         byte[] toClientBytes = tcpClient.askServer(hostname, port, data);
