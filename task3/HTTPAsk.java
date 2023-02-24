@@ -3,7 +3,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import tcpclient.TCPClient;
 
-public class HTTPAsk { 
+public class HTTPAsk {
  public static void main(String[] args) throws Exception {
         // Parse command-line arguments
        Integer port = Integer.parseInt(args[0]);
@@ -18,21 +18,33 @@ public class HTTPAsk {
         String hostname = null;
         byte[] data = new byte[0];
 	  while(true) {
+        Socket socket = serverSocket.accept();
         try (
-			 Socket socket = serverSocket.accept();
-       DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+       OutputStream out = socket.getOutputStream();
        InputStream in = socket.getInputStream()){
 
             byte[] request = new byte[1024];
             int read = in.read(request);
             String requestString = new String(request, 0, read);
+            StringBuilder errorCheck = new StringBuilder();
 
-           
             String[] lines = requestString.split("\r\n");
             String[] words = lines[0].split(" ");
             String[] parameters = words[1].split("[?&]");
- 
 
+ 
+            if (!requestString.contains("ask")) {
+                System.out.println("test ask");
+                errorCheck.append("HTTP/1.1 404 Not Found\r\n");
+                out.write(errorCheck.toString().getBytes());
+                continue;
+            }
+            if (!requestString.contains("GET") || !requestString.contains("hostname")) {
+                System.out.println("elis");
+                errorCheck.append("HTTP/1.1 400 Bad Request\r\n");
+                out.write(errorCheck.toString().getBytes());
+                continue;
+            }
     for (int i = 1; i < parameters.length; i++ ) {
         String[] parameter = parameters[i].split("=");
         switch (parameter[0]) {
@@ -54,10 +66,12 @@ public class HTTPAsk {
             case "shutdown":
                 shutdown = Boolean.parseBoolean(parameter[1]);
                 break;
+
             default:
                 break;
         }
     }
+
 
 
         TCPClient tcpClient = new TCPClient(shutdown, timeout, limit);
@@ -71,7 +85,7 @@ public class HTTPAsk {
             catch(Exception e){
                 System.out.println("Exception thrown: " + e);
         }
- }
+    }
  }
  }
 
