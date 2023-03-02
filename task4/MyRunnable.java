@@ -3,19 +3,27 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import tcpclient.TCPClient;
 
-public class HTTPAsk {
- public static void main(String[] args) throws Exception {
+public class MyRunnable implements Runnable{
+     /*
        Integer port = Integer.parseInt(args[0]);
-
         ServerSocket serverSocket = new ServerSocket(port);
+     */
 
+    Socket socket;
+
+    public MyRunnable(Socket socket){
+        this.socket = socket;
+    }
+
+    public void run(){
+        Integer port = null;
         boolean shutdown = false;
-        Integer timeout = null; // milliseconds
+        Integer timeout = null;
         Integer limit = null;
         String hostname = null;
         byte[] data = new byte[0];
 	  while(true) {
-        Socket socket = serverSocket.accept();
+        // Socket socket = serverSocket.accept();
         try (
        OutputStream out = socket.getOutputStream();
        InputStream in = socket.getInputStream()){
@@ -29,7 +37,7 @@ public class HTTPAsk {
             String[] words = lines[0].split(" ");
             String[] parameters = words[1].split("[?&]");
 
- 
+
             if (!requestString.contains("ask")) {
                 System.out.println("test ask");
                 errorCheck.append("HTTP/1.1 404 Not Found\r\n\r\n");
